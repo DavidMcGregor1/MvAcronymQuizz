@@ -1,28 +1,22 @@
 package com.groupProject.MvAcronymQuizz2;
 
-import com.groupProject.MvAcronymQuizz2.*;
-import com.groupProject.MvAcronymQuizz2.Acronyms;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 
-import java.io.UnsupportedEncodingException;
-import java.security.GeneralSecurityException;
-import java.util.Base64;
-
-import javax.crypto.Cipher;
-import javax.crypto.SecretKey;
-import javax.crypto.SecretKeyFactory;
-import javax.crypto.spec.PBEKeySpec;
-import javax.crypto.spec.PBEParameterSpec;
-import java.util.*;
+import java.util.List;
+import java.util.Random;
 
 @Controller
 public class MainController {
+
+    public MainController(AcronymsRepository u) {
+        repositoryAcronyms = u;
+
+    }
+
+    private AcronymsRepository repositoryAcronyms;
 
 
     @GetMapping("/home")
@@ -36,22 +30,42 @@ public class MainController {
     @ResponseStatus(value = HttpStatus.OK)
     @ResponseBody
     @GetMapping(path = "/getAcronyms", consumes = "application/json", produces = "application/json")
-    public Acronyms[] getAcronyms() {
+    public String getAcronyms() {
 
-        System.out.println("Before Array");
+        System.out.println("Hit getAcronyms API");
 
-    Acronyms[] listOfAcronyms = new Acronyms[10];
-        listOfAcronyms[0] = new Acronyms(1, "MVP", "Minimum Viable Product");
-        listOfAcronyms[1] = new Acronyms(2, "ISA", "Individual Savings Account");
-        listOfAcronyms[2] = new Acronyms(3, "SIPP", "Self Invested Personal Pension");
-        listOfAcronyms[3] = new Acronyms(4, "KID", "Key Investor Document");
-        listOfAcronyms[4] = new Acronyms(5, "MAaD", "My Accounts and Dealing");
 
-        System.out.println("After Array");
+        List<Acronyms> allDbEntries = repositoryAcronyms.findAll();
 
-        System.out.println("Inside getAcronymsMethod");
-        System.out.println(listOfAcronyms[1]);
-        return listOfAcronyms;
+        String result = "Acronyms -->";
+
+        for(int i = 0; i < allDbEntries.stream().count(); i++) {
+            Acronyms a = allDbEntries.get(i);
+            if(a != null) {
+                result = result + a.getAcronymName() + a.getAcronymMeaning() + ", ";
+            }
+
+
+        }
+
+
+        return result;
+
+
+
+//    AcronymsVm[] listOfAcronyms = new AcronymsVm[5];
+//        listOfAcronyms[0] = new AcronymsVm(1, "MVP", "Minimum Viable Product");
+//        listOfAcronyms[1] = new AcronymsVm(2, "ISA", "Individual Savings Account");
+//        listOfAcronyms[2] = new AcronymsVm(3, "SIPP", "Self Invested Personal Pension");
+//        listOfAcronyms[3] = new AcronymsVm(4, "KID", "Key Investor Document");
+//        listOfAcronyms[4] = new AcronymsVm(5, "MAaD", "My Accounts and Dealing");
+//
+//
+//        int randomIndexFromArray = new Random().nextInt(listOfAcronyms.length);
+//        System.out.println(randomIndexFromArray);
+//        System.out.println("What does" + " " + listOfAcronyms[randomIndexFromArray].acronym + " " + "stand for?");
+//
+//        return listOfAcronyms;
 
     }
 

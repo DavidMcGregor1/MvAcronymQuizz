@@ -96,8 +96,24 @@ public class MainController {
 
         return result;
 
-
     }
+
+
+    @ResponseStatus(value = HttpStatus.OK)
+    @ResponseBody
+    @PostMapping(path = "/addCategory", consumes = "application/json", produces = "application/json")
+    public CategoriesVm addCategory(@RequestBody CategoriesVm submittedCategory) {
+        System.out.println("Add Category API Called");
+
+        Categories newDataBaseCategory = new Categories();
+        newDataBaseCategory.setCategory(submittedCategory.category);
+
+
+        repositoryCategories.save(newDataBaseCategory);
+
+        return submittedCategory;
+    }
+
 
 
 

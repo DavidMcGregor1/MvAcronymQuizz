@@ -11,12 +11,14 @@ import java.util.Random;
 @Controller
 public class MainController {
 
-    public MainController(AcronymsRepository u) {
+    public MainController(AcronymsRepository u, CategoriesRepository c) {
         repositoryAcronyms = u;
+        repositoryCategories = c;
 
     }
 
     private AcronymsRepository repositoryAcronyms;
+    private CategoriesRepository repositoryCategories;
 
 
     @GetMapping("/home")
@@ -70,6 +72,32 @@ public class MainController {
     }
 
 
+    @ResponseStatus(value = HttpStatus.OK)
+    @ResponseBody
+    @GetMapping(path = "/getCategories", consumes = "application/json", produces = "application/json")
+    public String getCategories() {
+
+        System.out.println("Hit getCategories API");
+
+
+        List<Categories> allCategoryEntries = repositoryCategories.findAll();
+
+        String result = "Categories -->";
+
+        for (int i = 0; i < allCategoryEntries.stream().count(); i++) {
+            Categories a = allCategoryEntries.get(i);
+            if (a != null) {
+                result = result + a.getCategory();
+            }
+
+
+        }
+
+
+        return result;
+
+
+    }
 
 
 

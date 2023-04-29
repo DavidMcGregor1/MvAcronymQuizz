@@ -11,7 +11,7 @@ import javax.persistence.Table;
 
 
 
-@Table(name = "Acronyms")
+@Table(name = "Categories")
 @Entity
 public class Categories {
 

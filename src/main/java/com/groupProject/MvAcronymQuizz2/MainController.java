@@ -51,22 +51,22 @@ public class MainController {
 
         return result;
 
+    }
 
 
-//    AcronymsVm[] listOfAcronyms = new AcronymsVm[5];
-//        listOfAcronyms[0] = new AcronymsVm(1, "MVP", "Minimum Viable Product");
-//        listOfAcronyms[1] = new AcronymsVm(2, "ISA", "Individual Savings Account");
-//        listOfAcronyms[2] = new AcronymsVm(3, "SIPP", "Self Invested Personal Pension");
-//        listOfAcronyms[3] = new AcronymsVm(4, "KID", "Key Investor Document");
-//        listOfAcronyms[4] = new AcronymsVm(5, "MAaD", "My Accounts and Dealing");
-//
-//
-//        int randomIndexFromArray = new Random().nextInt(listOfAcronyms.length);
-//        System.out.println(randomIndexFromArray);
-//        System.out.println("What does" + " " + listOfAcronyms[randomIndexFromArray].acronym + " " + "stand for?");
-//
-//        return listOfAcronyms;
+    @ResponseStatus(value = HttpStatus.OK)
+    @ResponseBody
+    @PostMapping(path = "/addAcronym", consumes = "application/json", produces = "application/json")
+    public AcronymsVm addAcronym(@RequestBody AcronymsVm submittedAcronym) {
+        System.out.println("Add Acronym API Called");
 
+        Acronyms newDataBaseAcronym = new Acronyms();
+        newDataBaseAcronym.setAcronymName(submittedAcronym.acronym);
+        newDataBaseAcronym.setAcronymMeaning(submittedAcronym.meaning);
+
+        repositoryAcronyms.save(newDataBaseAcronym);
+
+        return submittedAcronym;
     }
 
 

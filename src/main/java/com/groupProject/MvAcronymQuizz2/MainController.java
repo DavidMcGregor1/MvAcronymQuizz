@@ -11,14 +11,16 @@ import java.util.Random;
 @Controller
 public class MainController {
 
-    public MainController(AcronymsRepository u, CategoriesRepository c) {
+    public MainController(AcronymsRepository u, CategoriesRepository c, AcRepository a) {
         repositoryAcronyms = u;
         repositoryCategories = c;
+        repositoryAcMapping = a;
 
     }
 
     private AcronymsRepository repositoryAcronyms;
     private CategoriesRepository repositoryCategories;
+    private AcRepository repositoryAcMapping;
 
 
     @GetMapping("/home")
@@ -114,6 +116,23 @@ public class MainController {
         return submittedCategory;
     }
 
+
+    @ResponseStatus(value = HttpStatus.OK)
+    @ResponseBody
+    @PostMapping(path = "/addAcMapping", consumes = "application/json", produces = "application/json")
+    public AcVm addAcMapping(@RequestBody AcVm submittedAcMap) {
+        System.out.println("Add Category API Called");
+
+        ACs newDataBaseMap = new ACs();
+        newDataBaseMap.setCategoryId(submittedAcMap.categoryId);
+        newDataBaseMap.setAcronymId(submittedAcMap.acronymId);
+
+
+
+        repositoryAcMapping.save(newDataBaseMap);
+
+        return submittedAcMap;
+    }
 
 
 

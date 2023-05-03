@@ -11,16 +11,19 @@ import java.util.Random;
 @Controller
 public class MainController {
 
-    public MainController(AcronymsRepository u, CategoriesRepository c, AcRepository a) {
+    public MainController(AcronymsRepository u, CategoriesRepository c, AcRepository a, FalseAnswersRepository f) {
         repositoryAcronyms = u;
         repositoryCategories = c;
         repositoryAcMapping = a;
+        repositoryFalseAnswers = f;
 
     }
 
     private AcronymsRepository repositoryAcronyms;
     private CategoriesRepository repositoryCategories;
     private AcRepository repositoryAcMapping;
+
+    private FalseAnswersRepository repositoryFalseAnswers;
 
 
     @GetMapping("/home")
@@ -133,6 +136,35 @@ public class MainController {
 
         return submittedAcMap;
     }
+
+
+
+    @ResponseStatus(value = HttpStatus.OK)
+    @ResponseBody
+    @GetMapping(path = "/getFalseAnswers", consumes = "application/json", produces = "application/json")
+    public String getFalseAnswers() {
+
+        System.out.println("Hit getFalseAnswers API");
+
+
+        List<FalseAnswers> allFalseAnswersEntries = repositoryFalseAnswers.findAll();
+
+        String result = "False Answers -->";
+
+        for (int i = 0; i < allFalseAnswersEntries.stream().count(); i++) {
+            FalseAnswers a = allFalseAnswersEntries.get(i);
+            if (a != null) {
+                result = result + a.getFalseAnswer();
+            }
+
+
+        }
+
+
+        return result;
+
+    }
+
 
 
 

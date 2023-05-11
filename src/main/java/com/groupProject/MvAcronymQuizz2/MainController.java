@@ -167,5 +167,53 @@ public class MainController {
 
 
 
+    @ResponseStatus(value = HttpStatus.OK)
+    @ResponseBody
+    @PostMapping(path = "/addFalseAnswer", consumes = "application/json", produces = "application/json")
+    public FalseAnswersVm addFalseAnswer (@RequestBody FalseAnswersVm submittedFalseAnswer) {
+        System.out.println("Add Category API Called");
+
+        FalseAnswers newDataBaseFalseAnswer = new FalseAnswers();
+        newDataBaseFalseAnswer.setAcronymId(submittedFalseAnswer.acronymId);
+        newDataBaseFalseAnswer.setFalseAnswer(submittedFalseAnswer.falseAnswer);
+
+
+
+        repositoryFalseAnswers.save(newDataBaseFalseAnswer);
+
+        return submittedFalseAnswer;
+    }
+
+
+
+    @ResponseStatus(value = HttpStatus.OK)
+    @ResponseBody
+    @GetMapping(path = "/getAcronymById", consumes = "application/json", produces = "application/json")
+    public String getAcronymById() {
+
+        System.out.println("Hit getAcronymById API");
+
+
+        List<Acronyms> allDbAcronyms = repositoryAcronyms.findAll();
+
+        int count = allDbAcronyms.toArray().length;
+
+        Random rn = new Random();
+        int randomAcronym = rn.nextInt(count) + 1;
+
+        System.out.println("Random Acronym Number: -> " + " " + randomAcronym);
+
+
+        System.out.println("Random Acronym From Number -> " + " " + ((Acronyms)allDbAcronyms.toArray()[randomAcronym]).getAcronymName());
+
+        System.out.println("Length of array from array.count  ->  " + " " + count);
+
+        String result = "False Answers -->";
+
+
+        return result;
+
+
+    }
 
 }

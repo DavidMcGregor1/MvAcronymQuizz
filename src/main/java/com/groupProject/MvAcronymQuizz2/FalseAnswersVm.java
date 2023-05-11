@@ -5,10 +5,13 @@ public class FalseAnswersVm {
     public int acronymId;
     public String falseAnswer;
 
-    FalseAnswersVm(int aid, int aAcronymId, String aFalseAnswer) {
+    public String[] potentialAnswers;
+
+    FalseAnswersVm(int aid, int aAcronymId, String aFalseAnswer, String[] aPotentialAnswers) {
         id = aid;
         falseAnswer = aFalseAnswer;
         acronymId = aAcronymId;
+        potentialAnswers = aPotentialAnswers;
 
     }
 

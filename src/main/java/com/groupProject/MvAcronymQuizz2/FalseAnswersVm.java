@@ -19,6 +19,8 @@ public class FalseAnswersVm {
 
     }
 
+    public String FalseAnswer;
+
 
 }
 

@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 
 @Controller
@@ -187,6 +188,10 @@ public class MainController {
 
 
 
+
+
+
+
     @ResponseStatus(value = HttpStatus.OK)
     @ResponseBody
     @GetMapping(path = "/getRandomAcronymId", consumes = "application/json", produces = "application/json")
@@ -258,11 +263,42 @@ public class MainController {
 
         }
 
-
-
             return result;
+    }
+
+
+    @ResponseStatus(value = HttpStatus.OK)
+    @ResponseBody
+    @PutMapping(path = "/editFalseAnswer", consumes = "application/json", produces = "application/json")
+    public String editFalseAnswer(@RequestBody FalseAnswersVm request) {
+        System.out.println("Hit editFalseAnswer API");
+
+        Optional<FalseAnswers> falseAnswerToUpdate = repositoryFalseAnswers.findById(request.id);
+
+        if (falseAnswerToUpdate.isPresent()) {
+
+            System.out.println("False Answer to update is present");
+
+            if (request.falseAnswer != null) {
+
+                System.out.println("Request.false answer is not null");
+                falseAnswerToUpdate.get().setFalseAnswer(request.falseAnswer);
+
+                System.out.println("Contents of false answer to update --> " + falseAnswerToUpdate.get().getFalseAnswer());
+
+            }
+
+            repositoryFalseAnswers.save(falseAnswerToUpdate.get());
+
+        } else {
+            System.out.println("The object has not been found from the database");
+        }
+
+        return "okay";
+
 
     }
+
 
 
 

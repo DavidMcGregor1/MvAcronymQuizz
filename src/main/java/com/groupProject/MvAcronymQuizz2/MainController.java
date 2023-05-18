@@ -5,10 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
+import java.util.*;
 
 @Controller
 public class MainController {
@@ -167,6 +164,7 @@ public class MainController {
 
     }
 
+// .\gradlew.bat bootrun
 
 
     @ResponseStatus(value = HttpStatus.OK)
@@ -244,6 +242,7 @@ public class MainController {
 
 
         FalseAnswersVm result = new FalseAnswersVm();
+        FalseAnswersVm newResult = new FalseAnswersVm();
 
         for (int i = 0; i < allDbFalseAnswers.stream().count(); i++) {
             FalseAnswers a = allDbFalseAnswers.get(i);
@@ -257,7 +256,13 @@ public class MainController {
                     System.out.println("Array of potential answers -> " + " " + temporyFalseAnswerStore);
                     result.potentialAnswers = new String[(int)temporyFalseAnswerStore.stream().count()];
                     result.potentialAnswers = (String[])temporyFalseAnswerStore.toArray(result.potentialAnswers);
+
+                    
+                    Collections.shuffle(Arrays.asList(result.potentialAnswers));
+
                 }
+
+//                Collections.shuffle();
 
             }
 

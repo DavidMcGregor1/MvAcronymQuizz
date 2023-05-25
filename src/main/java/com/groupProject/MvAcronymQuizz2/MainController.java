@@ -4,6 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.ui.Model;
 
 import java.util.*;
 
@@ -217,7 +218,7 @@ public class MainController {
     @ResponseStatus(value = HttpStatus.OK)
     @ResponseBody
     @GetMapping(path = "/getQuestion", consumes = "application/json", produces = "application/json")
-    public FalseAnswersVm getQuestion(@RequestBody FalseAnswersVm request) {
+    public FalseAnswersVm getQuestion(@RequestBody FalseAnswersVm request, Model model) {
 
         System.out.println("Hit getQuestion API");
 
@@ -232,6 +233,8 @@ public class MainController {
         String fullQuestion = "What does " + ((Acronyms)allDbAcronyms.toArray()[randomAcronym]).getAcronymName() + "stand for?";
         int idFromRandomAcronym = ((Acronyms)allDbAcronyms.toArray()[randomAcronym]).getId();
         String meaningFromRandomAcronym = ((Acronyms)allDbAcronyms.toArray()[randomAcronym]).getAcronymMeaning();
+
+//        model.addAttribute("elQuestion", fullQuestion);
 
         List<FalseAnswers> allDbFalseAnswers = repositoryFalseAnswers.findAll();
         ArrayList<String> temporyFalseAnswerStore = new ArrayList<>();
@@ -257,19 +260,67 @@ public class MainController {
                     result.potentialAnswers = new String[(int)temporyFalseAnswerStore.stream().count()];
                     result.potentialAnswers = (String[])temporyFalseAnswerStore.toArray(result.potentialAnswers);
 
-                    
+
                     Collections.shuffle(Arrays.asList(result.potentialAnswers));
 
                 }
 
-//                Collections.shuffle();
 
             }
 
         }
 
+            result.potentialAnswers = new String[(int)temporyFalseAnswerStore.stream().count()];
             return result;
     }
+
+
+
+
+
+    @GetMapping("/displayQuestion")
+    public String displayQuestion(Model model) {
+
+        System.out.println("hit display question end point");
+
+
+
+        List<Acronyms> allDbAcronyms = repositoryAcronyms.findAll();
+
+        int count = allDbAcronyms.toArray().length;
+
+        Random rn = new Random();
+        int randomAcronym = rn.nextInt(count) + 1;
+
+
+        String fullQuestion = "What does " + ((Acronyms)allDbAcronyms.toArray()[randomAcronym]).getAcronymName() + " stand for?";
+        model.addAttribute("elQuestion", fullQuestion);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        return "index";
+
+
+    }
+
+
+
+
+
+
+
+
 
 
     @ResponseStatus(value = HttpStatus.OK)
@@ -302,6 +353,16 @@ public class MainController {
         return "okay";
 
 
+    }
+
+
+
+
+    @GetMapping("/myPage")
+    public String myPage(Model model) {
+        String stringValue = "Please work";
+        model.addAttribute("stringValue", stringValue);
+        return "index";
     }
 
 

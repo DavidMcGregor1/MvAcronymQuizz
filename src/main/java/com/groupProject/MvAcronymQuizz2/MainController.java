@@ -26,6 +26,12 @@ public class MainController {
     private FalseAnswersRepository repositoryFalseAnswers;
 
 
+
+
+
+
+
+
     @GetMapping("/home")
     public String home() {
         System.out.println("arrived at home page");
@@ -215,64 +221,64 @@ public class MainController {
 
     }
 
-    @ResponseStatus(value = HttpStatus.OK)
-    @ResponseBody
-    @GetMapping(path = "/getQuestion", consumes = "application/json", produces = "application/json")
-    public FalseAnswersVm getQuestion(@RequestBody FalseAnswersVm request, Model model) {
-
-        System.out.println("Hit getQuestion API");
-
-        List<Acronyms> allDbAcronyms = repositoryAcronyms.findAll();
-
-        int count = allDbAcronyms.toArray().length;
-
-        Random rn = new Random();
-        int randomAcronym = rn.nextInt(count) + 1;
-
-
-        String fullQuestion = "What does " + ((Acronyms)allDbAcronyms.toArray()[randomAcronym]).getAcronymName() + "stand for?";
-        int idFromRandomAcronym = ((Acronyms)allDbAcronyms.toArray()[randomAcronym]).getId();
-        String meaningFromRandomAcronym = ((Acronyms)allDbAcronyms.toArray()[randomAcronym]).getAcronymMeaning();
-
-//        model.addAttribute("elQuestion", fullQuestion);
-
-        List<FalseAnswers> allDbFalseAnswers = repositoryFalseAnswers.findAll();
-        ArrayList<String> temporyFalseAnswerStore = new ArrayList<>();
-        temporyFalseAnswerStore.add(meaningFromRandomAcronym);
-
-//        Optional<FalseAnswers> falseAnswer = repositoryFalseAnswers.findById(request.id);
-
-
-
-        FalseAnswersVm result = new FalseAnswersVm();
-        FalseAnswersVm newResult = new FalseAnswersVm();
-
-        for (int i = 0; i < allDbFalseAnswers.stream().count(); i++) {
-            FalseAnswers a = allDbFalseAnswers.get(i);
-
-            int acronymIdToCompare = a.getAcronymId();
-
-            if(a != null) {
-
-                if(acronymIdToCompare == idFromRandomAcronym) {
-                     temporyFalseAnswerStore.add(a.getFalseAnswer());
-                    System.out.println("Array of potential answers -> " + " " + temporyFalseAnswerStore);
-                    result.potentialAnswers = new String[(int)temporyFalseAnswerStore.stream().count()];
-                    result.potentialAnswers = (String[])temporyFalseAnswerStore.toArray(result.potentialAnswers);
-
-
-                    Collections.shuffle(Arrays.asList(result.potentialAnswers));
-
-                }
-
-
-            }
-
-        }
-
-            result.potentialAnswers = new String[(int)temporyFalseAnswerStore.stream().count()];
-            return result;
-    }
+//    @ResponseStatus(value = HttpStatus.OK)
+//    @ResponseBody
+//    @GetMapping(path = "/getQuestion", consumes = "application/json", produces = "application/json")
+//    public FalseAnswersVm getQuestion(@RequestBody FalseAnswersVm request, Model model) {
+//
+//        System.out.println("Hit getQuestion API");
+//
+//        List<Acronyms> allDbAcronyms = repositoryAcronyms.findAll();
+//
+//        int count = allDbAcronyms.toArray().length;
+//
+//        Random rn = new Random();
+//        int randomAcronym = rn.nextInt(count) + 1;
+//
+//
+//        String fullQuestion = "What does " + ((Acronyms)allDbAcronyms.toArray()[randomAcronym]).getAcronymName() + "stand for?";
+//        int idFromRandomAcronym = ((Acronyms)allDbAcronyms.toArray()[randomAcronym]).getId();
+//        String meaningFromRandomAcronym = ((Acronyms)allDbAcronyms.toArray()[randomAcronym]).getAcronymMeaning();
+//
+////        model.addAttribute("elQuestion", fullQuestion);
+//
+//        List<FalseAnswers> allDbFalseAnswers = repositoryFalseAnswers.findAll();
+//        ArrayList<String> temporyFalseAnswerStore = new ArrayList<>();
+//        temporyFalseAnswerStore.add(meaningFromRandomAcronym);
+//
+////        Optional<FalseAnswers> falseAnswer = repositoryFalseAnswers.findById(request.id);
+//
+//
+//
+//        FalseAnswersVm result = new FalseAnswersVm();
+//        FalseAnswersVm newResult = new FalseAnswersVm();
+//
+//        for (int i = 0; i < allDbFalseAnswers.stream().count(); i++) {
+//            FalseAnswers a = allDbFalseAnswers.get(i);
+//
+//            int acronymIdToCompare = a.getAcronymId();
+//
+//            if(a != null) {
+//
+//                if(acronymIdToCompare == idFromRandomAcronym) {
+//                     temporyFalseAnswerStore.add(a.getFalseAnswer());
+//                    System.out.println("Array of potential answers -> " + " " + temporyFalseAnswerStore);
+//                    result.potentialAnswers = new String[(int)temporyFalseAnswerStore.stream().count()];
+//                    result.potentialAnswers = (String[])temporyFalseAnswerStore.toArray(result.potentialAnswers);
+//
+//
+//                    Collections.shuffle(Arrays.asList(result.potentialAnswers));
+//
+//                }
+//
+//
+//            }
+//
+//        }
+//
+//            result.potentialAnswers = new String[(int)temporyFalseAnswerStore.stream().count()];
+//            return result;
+//    }
 
 
 
@@ -295,16 +301,51 @@ public class MainController {
 
         String fullQuestion = "What does " + ((Acronyms)allDbAcronyms.toArray()[randomAcronym]).getAcronymName() + " stand for?";
         model.addAttribute("elQuestion", fullQuestion);
+        int idFromRandomAcronym = (((Acronyms) allDbAcronyms.toArray()[randomAcronym]).getId());
+        String meaningFromRandomAcronym = (((Acronyms) allDbAcronyms.toArray()[randomAcronym]).getAcronymMeaning());
+
+        System.out.println("Meaning from random acronym: " + meaningFromRandomAcronym);
+
+        List<FalseAnswers> allDbFalseAnswers = repositoryFalseAnswers.findAll();
+        ArrayList<String> temporyFalseAnswerStore = new ArrayList<>();
+        temporyFalseAnswerStore.add(meaningFromRandomAcronym);
+
+        System.out.println("Tempory answer store: " + temporyFalseAnswerStore);
+
+
+        FalseAnswersVm result = new FalseAnswersVm();
+        FalseAnswersVm newResult = new FalseAnswersVm();
+
+        for (int i = 0; i < allDbFalseAnswers.stream().count(); i++) {
+            FalseAnswers a = allDbFalseAnswers.get(i);
+            System.out.println(a);
+
+            int acronymIdToCompare = a.getAcronymId();
+
+            if(acronymIdToCompare == idFromRandomAcronym) {
+                System.out.println("Match!");
+                temporyFalseAnswerStore.add((a.getFalseAnswer()));
+                System.out.println(temporyFalseAnswerStore.toString());
+
+                result.potentialAnswers = new String[(int)temporyFalseAnswerStore.stream().count()];
+                result.potentialAnswers = (String[])temporyFalseAnswerStore.toArray(result.potentialAnswers);
+
+                Collections.shuffle(Arrays.asList(result.potentialAnswers));
+
+
+
+            }
+
+        }
 
 
 
 
-
-
-
-
-
-
+        model.addAttribute("fullQuestion", fullQuestion);
+        model.addAttribute("meaningFromRandomAcronym", meaningFromRandomAcronym);
+        model.addAttribute("idFromRandomAcronym", idFromRandomAcronym);
+        model.addAttribute("temporaryFalseAnswerStore", temporyFalseAnswerStore);
+        model.addAttribute("result", result.potentialAnswers);
 
 
 
@@ -360,8 +401,15 @@ public class MainController {
 
     @GetMapping("/myPage")
     public String myPage(Model model) {
-        String stringValue = "Please work";
-        model.addAttribute("stringValue", stringValue);
+//        String stringValue = "Please work";
+//        model.addAttribute("stringValue", stringValue);
+
+
+
+
+
+
+
         return "index";
     }
 

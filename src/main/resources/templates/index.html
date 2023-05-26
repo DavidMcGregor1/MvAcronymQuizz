@@ -3,23 +3,92 @@
 <head>
     <meta charset="UTF-8">
     <title>Acronym Quiz</title>
-    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+
+
+    <style>
+
+
+        * {
+ margin: 0;
+ padding: 0;
+ box-sizing: border-box;
+ font-family: 'inter', 'sans-serif'
+}
+
+body {
+    background-color: #1C1A5E;
+    padding-top: 8%;
+}
+
+#question {
+    color: white;
+    text-align: center;
+    padding-top: 1%;
+}
+
+#questionNumber {
+    color: #5666BD;
+    text-align: center;
+}
+
+.options {
+    padding-top: 5%;
+    gap: 40px;
+    justify-content: center;
+}
+
+.options button {
+    cursor: pointer;
+    padding: 15px;
+    width: 350px;
+    height: 80px;
+    border-radius: 20px;
+    font-size: large;
+}
+
+.option {
+    display: flex;
+    margin-bottom: 1%;
+    margin-left: auto;
+    margin-right: auto;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    background-color: #D9D9D9;
+}
+
+
+    </style>
 </head>
 <body>
 
     <main>
 
-        <h1 th:text="${fullQuestion}"></h1>
+        <h3 id="questionNumber">Question x of x</h3>
+<!--        <h1 id="question">What does pwib stand for?</h1>-->
+        <h1 id="question" th:text="${fullQuestion}"></h1>
 
-        
+        <div class="options">
+
+            <button class="option" th:text="${result[0]}">
+
+            </button>
+
+            <button class="option" th:text="${result[1]}">
+
+            </button>
+
+            <button class="option" th:text="${result[2]}">
+
+            </button>
+
+            <button class="option" th:text="${result[3]}">
+
+            </button>
 
 
-
-
-        <p th:text="${result[0]}"></p>
-        <p th:text="${result[1]}"></p>
-        <p th:text="${result[2]}"></p>
-        <p th:text="${result[3]}"></p>
+        </div>
 
 
 

@@ -399,21 +399,37 @@ public class MainController {
 
 
 
-    @GetMapping("/myPage")
+    @GetMapping("/startScreen")
     public String myPage(Model model) {
-//        String stringValue = "Please work";
-//        model.addAttribute("stringValue", stringValue);
 
-
-
-
-
-
-
-        return "index";
+        return "startScreen";
     }
 
 
+
+    @ResponseStatus(value = HttpStatus.OK)
+    @ResponseBody
+    @GetMapping(path = "/getScore", consumes = "application/json", produces = "application/json")
+    public int getScore() {
+
+        int score = 100;
+
+        return score;
+
+    }
+
+    @ResponseStatus(value = HttpStatus.OK)
+    @ResponseBody
+    @GetMapping(path = "/addOneToScore", consumes = "application/json", produces = "application/json")
+    public int addOneToScore() {
+
+        int score = 100;
+
+        score += 1;
+
+        return score;
+
+    }
 
 
 }

@@ -26,18 +26,11 @@ public class MainController {
     private FalseAnswersRepository repositoryFalseAnswers;
 
 
-
-
-
-
-
-
     @GetMapping("/home")
     public String home() {
         System.out.println("arrived at home page");
         return "home";
     }
-
 
 
     @ResponseStatus(value = HttpStatus.OK)
@@ -52,9 +45,9 @@ public class MainController {
 
         String result = "Acronyms -->";
 
-        for(int i = 0; i < allDbEntries.stream().count(); i++) {
+        for (int i = 0; i < allDbEntries.stream().count(); i++) {
             Acronyms a = allDbEntries.get(i);
-            if(a != null) {
+            if (a != null) {
                 result = result + a.getAcronymName() + a.getAcronymMeaning() + ", ";
             }
 
@@ -137,12 +130,10 @@ public class MainController {
         newDataBaseMap.setAcronymId(submittedAcMap.acronymId);
 
 
-
         repositoryAcMapping.save(newDataBaseMap);
 
         return submittedAcMap;
     }
-
 
 
     @ResponseStatus(value = HttpStatus.OK)
@@ -177,7 +168,7 @@ public class MainController {
     @ResponseStatus(value = HttpStatus.OK)
     @ResponseBody
     @PostMapping(path = "/addFalseAnswer", consumes = "application/json", produces = "application/json")
-    public FalseAnswersVm addFalseAnswer (@RequestBody FalseAnswersVm submittedFalseAnswer) {
+    public FalseAnswersVm addFalseAnswer(@RequestBody FalseAnswersVm submittedFalseAnswer) {
         System.out.println("Add Category API Called");
 
         FalseAnswers newDataBaseFalseAnswer = new FalseAnswers();
@@ -185,16 +176,10 @@ public class MainController {
         newDataBaseFalseAnswer.setFalseAnswer(submittedFalseAnswer.falseAnswer);
 
 
-
         repositoryFalseAnswers.save(newDataBaseFalseAnswer);
 
         return submittedFalseAnswer;
     }
-
-
-
-
-
 
 
     @ResponseStatus(value = HttpStatus.OK)
@@ -212,10 +197,10 @@ public class MainController {
         Random rn = new Random();
         int randomAcronym = rn.nextInt(count) + 1;
 
-        System.out.println("Random Acronym From Number -> " + " " + ((Acronyms)allDbAcronyms.toArray()[randomAcronym]).getAcronymName());
-        System.out.println("Random Acronym Id -> " + " " + ((Acronyms)allDbAcronyms.toArray()[randomAcronym]).getId());
+        System.out.println("Random Acronym From Number -> " + " " + ((Acronyms) allDbAcronyms.toArray()[randomAcronym]).getAcronymName());
+        System.out.println("Random Acronym Id -> " + " " + ((Acronyms) allDbAcronyms.toArray()[randomAcronym]).getId());
 
-        String result = "Id -->" + ((Acronyms)allDbAcronyms.toArray()[randomAcronym]).getId();
+        String result = "Id -->" + ((Acronyms) allDbAcronyms.toArray()[randomAcronym]).getId();
 
         return result;
 
@@ -279,6 +264,27 @@ public class MainController {
 //            result.potentialAnswers = new String[(int)temporyFalseAnswerStore.stream().count()];
 //            return result;
 //    }
+
+
+    @ResponseStatus(value = HttpStatus.OK)
+    @ResponseBody
+    @PostMapping(path = "/getAcronymById", consumes = "application/json", produces = "application/json")
+    public AcronymsVm getAcronymById(@RequestBody AcronymsVm submittedId) {
+
+        System.out.println("hit getAcronymById api");
+        System.out.println("submitted id = " + submittedId.id);
+
+        Optional<Acronyms> acronymyId = repositoryAcronyms.findById(submittedId.id);
+
+        AcronymsVm result = new AcronymsVm();
+        result.acronym = acronymyId.get().getAcronymName();
+        result.meaning = acronymyId.get().getAcronymMeaning();
+        result.id = acronymyId.get().getId();
+
+//        String result = "here  -> " + randomAcronymId;
+
+        return result;
+    }
 
 
 

@@ -70,31 +70,87 @@ body {
 
         <div class="options">
 
-            <button class="option" th:text="${result[0]}">
+            <button class="option" th:acronymMeaning="${result[0]}" th:acroId="${idFromRandomAcronym}" onclick="elFunction(this.getAttribute('acroId'), this.getAttribute('acronymMeaning'))" th:text="${result[0]}">
 
             </button>
 
-            <button class="option" th:text="${result[1]}">
+            <button class="option" th:acronymMeaning="${result[1]}" th:acroId="${idFromRandomAcronym}" onclick="elFunction(this.getAttribute('acroId'), this.getAttribute('acronymMeaning'))" th:text="${result[1]}">
 
             </button>
 
-            <button class="option" th:text="${result[2]}">
+            <button class="option" th:acronymMeaning="${result[2]}" th:acroId="${idFromRandomAcronym}" onclick="elFunction(this.getAttribute('acroId'), this.getAttribute('acronymMeaning'))" th:text="${result[2]}">
 
             </button>
 
-            <button class="option" th:text="${result[3]}">
+            <button class="option" th:acronymMeaning="${result[3]}" th:acroId="${idFromRandomAcronym}" onclick="elFunction(this.getAttribute('acroId'), this.getAttribute('acronymMeaning'))" th:text="${result[3]}">
 
             </button>
 
 
         </div>
 
-
-
-
-
-
     </main>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+
+
+    <script>
+
+
+
+
+
+    console.log("working");
+
+    function elFunction(buttonNumber, message) {
+        console.log("called function");
+        console.log("clicked button number: " + buttonNumber);
+        console.log("button text: " + message)
+
+
+        var elData = JSON.stringify({
+
+            "id": buttonNumber
+
+        });
+
+        $.ajax({
+            url: "/getAcronymById",
+            data: elData,
+            type: "POST",
+            dataType: "json",
+            processData: false,
+            contentType: "application/json",
+            success: function(serverResponse) {
+
+
+
+                if(message === serverResponse.meaning) {
+                    alert("success!!!!!!!!!!!!");
+
+                } else {
+                    alert("WRONG!!!");
+                }
+
+            }
+
+        });
+
+
+
+
+
+
+
+
+    }
+
+
+
+
+
+
+</script>
 
 </body>
 </html>

@@ -60,6 +60,10 @@ body {
     background-color: green;
 }
 
+.makeRed {
+    background-color: red;
+}
+
 
     </style>
 </head>
@@ -72,19 +76,19 @@ body {
 
         <div class="options">
 
-            <button id="buttonNumber1" class="option" th:idOfButton="1" th:acronymMeaning="${result[0]}" th:acroId="${idFromRandomAcronym}" onclick="elFunction(this.getAttribute('acroId'), this.getAttribute('acronymMeaning'), this.getAttribute('idOfButton'))" th:text="${result[0]}">
+            <button id="buttonNumber1" class="option" th:idOfButton="1" th:acronymMeaning="${result[0]}" th:acroId="${idFromRandomAcronym}" onclick="elFunction(this.getAttribute('acroId'), this.getAttribute('acronymMeaning'), this.getAttribute('idOfButton'), this)" th:text="${result[0]}">
 
             </button>
 
-            <button id="buttonNumber2" class="option" th:idOfButton="2" th:acronymMeaning="${result[1]}" th:acroId="${idFromRandomAcronym}" onclick="elFunction(this.getAttribute('acroId'), this.getAttribute('acronymMeaning'), this.getAttribute('idOfButton'))" th:text="${result[1]}">
+            <button id="buttonNumber2" class="option" th:idOfButton="2" th:acronymMeaning="${result[1]}" th:acroId="${idFromRandomAcronym}" onclick="elFunction(this.getAttribute('acroId'), this.getAttribute('acronymMeaning'), this.getAttribute('idOfButton'), this)" th:text="${result[1]}">
 
             </button>
 
-            <button id="buttonNumber3" class="option" th:idOfButton="3" th:acronymMeaning="${result[2]}" th:acroId="${idFromRandomAcronym}" onclick="elFunction(this.getAttribute('acroId'), this.getAttribute('acronymMeaning'), this.getAttribute('idOfButton'))" th:text="${result[2]}">
+            <button id="buttonNumber3" class="option" th:idOfButton="3" th:acronymMeaning="${result[2]}" th:acroId="${idFromRandomAcronym}" onclick="elFunction(this.getAttribute('acroId'), this.getAttribute('acronymMeaning'), this.getAttribute('idOfButton'), this)" th:text="${result[2]}">
 
             </button>
 
-            <button id="buttonNumber4" class="option" th:idOfButton="4" th:acronymMeaning="${result[3]}" th:acroId="${idFromRandomAcronym}" onclick="elFunction(this.getAttribute('acroId'), this.getAttribute('acronymMeaning'), this.getAttribute('idOfButton'))" th:text="${result[3]}">
+            <button id="buttonNumber4" class="option" th:idOfButton="4" th:acronymMeaning="${result[3]}" th:acroId="${idFromRandomAcronym}" onclick="elFunction(this.getAttribute('acroId'), this.getAttribute('acronymMeaning'), this.getAttribute('idOfButton'), this)" th:text="${result[3]}">
 
             </button>
 
@@ -103,16 +107,12 @@ body {
     let isRight;
 
 
-    function elFunction(buttonNumber, message, event) {
+    function elFunction(buttonNumber, message, buttonClicked) {
         console.log("called function");
         console.log("clicked button number: " + buttonNumber);
         console.log("button text: " + message)
 
-        const buttonClicked = event.target;
-
-
-
-
+        
         var elData = JSON.stringify({
 
             "id": buttonNumber
@@ -128,13 +128,11 @@ body {
             contentType: "application/json",
             success: function(serverResponse) {
 
-
-
                 if(message === serverResponse.meaning) {
 
                     isRight = true;
                     console.log("value of isRight = " + isRight)
-                    // buttonClicked.style.backgroundColour = 'green';
+                    buttonClicked.classList.add('makeGreen');
                     alert("Correct");
 
 
@@ -142,9 +140,11 @@ body {
 
                     isRight = false;
                     console.log("value of isRight = " + isRight)
-                    // buttonClicked.style.backgroundColour = 'red';
+                    buttonClicked.classList.add('makeRed');
                     alert("Wrong");
                 }
+
+                
 
             }
 

@@ -3,8 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <title>Acronym Quiz</title>
-    <link rel="stylesheet" type="text/css" href="css/style.css">
-
 
     <style>
 
@@ -58,6 +56,10 @@ body {
     background-color: #D9D9D9;
 }
 
+.makeGreen {
+    background-color: green;
+}
+
 
     </style>
 </head>
@@ -70,19 +72,19 @@ body {
 
         <div class="options">
 
-            <button class="option" th:acronymMeaning="${result[0]}" th:acroId="${idFromRandomAcronym}" onclick="elFunction(this.getAttribute('acroId'), this.getAttribute('acronymMeaning'))" th:text="${result[0]}">
+            <button id="buttonNumber1" class="option" th:idOfButton="1" th:acronymMeaning="${result[0]}" th:acroId="${idFromRandomAcronym}" onclick="elFunction(this.getAttribute('acroId'), this.getAttribute('acronymMeaning'), this.getAttribute('idOfButton'))" th:text="${result[0]}">
 
             </button>
 
-            <button class="option" th:acronymMeaning="${result[1]}" th:acroId="${idFromRandomAcronym}" onclick="elFunction(this.getAttribute('acroId'), this.getAttribute('acronymMeaning'))" th:text="${result[1]}">
+            <button id="buttonNumber2" class="option" th:idOfButton="2" th:acronymMeaning="${result[1]}" th:acroId="${idFromRandomAcronym}" onclick="elFunction(this.getAttribute('acroId'), this.getAttribute('acronymMeaning'), this.getAttribute('idOfButton'))" th:text="${result[1]}">
 
             </button>
 
-            <button class="option" th:acronymMeaning="${result[2]}" th:acroId="${idFromRandomAcronym}" onclick="elFunction(this.getAttribute('acroId'), this.getAttribute('acronymMeaning'))" th:text="${result[2]}">
+            <button id="buttonNumber3" class="option" th:idOfButton="3" th:acronymMeaning="${result[2]}" th:acroId="${idFromRandomAcronym}" onclick="elFunction(this.getAttribute('acroId'), this.getAttribute('acronymMeaning'), this.getAttribute('idOfButton'))" th:text="${result[2]}">
 
             </button>
 
-            <button class="option" th:acronymMeaning="${result[3]}" th:acroId="${idFromRandomAcronym}" onclick="elFunction(this.getAttribute('acroId'), this.getAttribute('acronymMeaning'))" th:text="${result[3]}">
+            <button id="buttonNumber4" class="option" th:idOfButton="4" th:acronymMeaning="${result[3]}" th:acroId="${idFromRandomAcronym}" onclick="elFunction(this.getAttribute('acroId'), this.getAttribute('acronymMeaning'), this.getAttribute('idOfButton'))" th:text="${result[3]}">
 
             </button>
 
@@ -96,18 +98,19 @@ body {
 
     <script>
 
-
-    var score = 0;
-    
-
-
-
     console.log("working");
+    const buttons = document.querySelectorAll('button');
+    let isRight;
 
-    function elFunction(buttonNumber, message) {
+
+    function elFunction(buttonNumber, message, event) {
         console.log("called function");
         console.log("clicked button number: " + buttonNumber);
         console.log("button text: " + message)
+
+        const buttonClicked = event.target;
+
+
 
 
         var elData = JSON.stringify({
@@ -128,10 +131,19 @@ body {
 
 
                 if(message === serverResponse.meaning) {
-                    alert("success!!!!!!!!!!!!");
+
+                    isRight = true;
+                    console.log("value of isRight = " + isRight)
+                    // buttonClicked.style.backgroundColour = 'green';
+                    alert("Correct");
+
 
                 } else {
-                    alert("WRONG!!!");
+
+                    isRight = false;
+                    console.log("value of isRight = " + isRight)
+                    // buttonClicked.style.backgroundColour = 'red';
+                    alert("Wrong");
                 }
 
             }
@@ -139,14 +151,33 @@ body {
         });
 
 
+    //     function changeColourOnClick(event) {
+    //     const clickedButton = event.target;
+    //     console.log("Called changeColourOnClick function")
+        
+    //     if(isRight == true) {
+    //         console.log("inside isRight set = true")
+    //         console.log("value of isRight = " + isRight)
+    //         clickedButton.style.backgroundColor = 'green';
+    //     } else if(isRight == false) {
+    //         console.log("inside isRight set = false")
+    //         console.log("value of isRight = " + isRight)
+    //         clickedButton.style.backgroundColor = 'red';
+    //     }
 
+    
+    // }
 
-
+    // buttons.forEach(function(button) {
+    //     button.addEventListener("click", changeColourOnClick);
+    // });
 
 
 
     }
 
+
+    
 
 
 
